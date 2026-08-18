@@ -322,7 +322,35 @@ function initContactForm() {
 
       const name = document.getElementById('contactName')?.value || 'Estimado cliente';
       const email = document.getElementById('contactEmail')?.value || '';
+      const phone = document.getElementById('contactPhone')?.value || '';
+      const company = document.getElementById('contactCompany')?.value || 'Empresa Prospecto';
+      const service = document.getElementById('contactService')?.value || 'Consultoría Estratégica & Gobierno TI';
+      const appointmentDate = document.getElementById('appointmentDate')?.value || '';
+      const message = document.getElementById('contactMessage')?.value || '';
       const ticketId = 'GAONA-' + Math.floor(100000 + Math.random() * 900000);
+
+      // Push to CRM Proposals localStorage
+      try {
+        const existing = JSON.parse(localStorage.getItem('gaona_crm_proposals') || '[]');
+        const newLead = {
+          id: 'PROP-' + Math.floor(1000 + Math.random() * 9000),
+          client: name,
+          company: company,
+          email: email,
+          phone: phone,
+          service: service,
+          value: 45000,
+          priority: 'alta',
+          stage: appointmentDate ? 'diagnosis' : 'prospect',
+          date: new Date().toISOString().split('T')[0],
+          appointmentDate: appointmentDate,
+          notes: `Lead recibido desde formulario web. Mensaje: "${message}" Ticket: ${ticketId}`
+        };
+        existing.unshift(newLead);
+        localStorage.setItem('gaona_crm_proposals', JSON.stringify(existing));
+      } catch (err) {
+        console.error('CRM sync error:', err);
+      }
 
       // Open Success Modal
       const modal = document.getElementById('successModal');
