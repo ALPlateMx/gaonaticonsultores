@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Propuesta Técnica y Comercial - Gaona Consultores TI</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       PRINT & DOCUMENT ENGINE STYLES
+       ========================================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 16mm 14mm 16mm 14mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      line-height: 1.6;
+      font-size: 9.8pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, .brand-font {
+      font-family: 'Outfit', sans-serif;
+      color: #0b132b;
+      font-weight: 700;
+    }
+
+    h1 { font-size: 24pt; line-height: 1.15; }
+    h2 { font-size: 14pt; margin-top: 18pt; margin-bottom: 8pt; color: #0f172a; border-bottom: 1.5pt solid #00c6ff; padding-bottom: 4pt; }
+    h3 { font-size: 11pt; margin-top: 12pt; margin-bottom: 4pt; color: #1e3a8a; }
+    h4 { font-size: 10pt; margin-top: 8pt; margin-bottom: 3pt; color: #334155; }
+    p { margin-bottom: 7pt; text-align: justify; }
+
+    /* Header & Footer on Inner Pages */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8pt;
+      border-bottom: 1pt solid #cbd5e1;
+      margin-bottom: 14pt;
+    }
+
+    .doc-header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .doc-header-logo img {
+      height: 24px;
+      width: 24px;
+      object-fit: contain;
+    }
+
+    .doc-header-title {
+      font-size: 8pt;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+    }
+
+    .doc-footer {
+      margin-top: auto;
+      padding-top: 8pt;
+      border-top: 1pt solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: #64748b;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(145deg, #070b14 0%, #0d1527 60%, #131f38 100%);
+      color: #ffffff;
+      padding: 35pt 30pt;
+      border-radius: 12pt;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cover-logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cover-logo-img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6));
+    }
+
+    .cover-badge {
+      display: inline-block;
+      padding: 4pt 10pt;
+      background: rgba(0, 242, 254, 0.12);
+      border: 1pt solid rgba(0, 242, 254, 0.4);
+      color: #00f2fe;
+      border-radius: 20pt;
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .cover-main {
+      margin: auto 0;
+    }
+
+    .cover-subtitle-tag {
+      color: #00f2fe;
+      font-size: 11pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8pt;
+    }
+
+    .cover-title {
+      font-size: 26pt;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 12pt;
+    }
+
+    .cover-title span {
+      background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-desc {
+      font-size: 11pt;
+      color: #94a3b8;
+      max-width: 480pt;
+      line-height: 1.6;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12pt;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1pt solid rgba(255, 255, 255, 0.1);
+      border-radius: 8pt;
+      padding: 14pt;
+    }
+
+    .meta-item-lbl {
+      font-size: 7.5pt;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-item-val {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-top: 2pt;
+    }
+
+    /* Cards & Boxes */
+    .info-card {
+      background: #f8fafc;
+      border: 1pt solid #e2e8f0;
+      border-left: 3.5pt solid #00c6ff;
+      border-radius: 6pt;
+      padding: 9pt 12pt;
+      margin-bottom: 10pt;
+    }
+
+    .info-card-title {
+      font-weight: 700;
+      color: #0b132b;
+      margin-bottom: 3pt;
+      font-size: 9.5pt;
+    }
+
+    .highlight-badge {
+      background: #e0f2fe;
+      color: #0284c7;
+      font-weight: 700;
+      padding: 2pt 6pt;
+      border-radius: 4pt;
+      font-size: 8pt;
+      display: inline-block;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8pt;
+      margin-bottom: 12pt;
+      font-size: 8.8pt;
+    }
+
+    th, td {
+      padding: 6pt 8pt;
+      text-align: left;
+      border-bottom: 1pt solid #e2e8f0;
+    }
+
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 8.2pt;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    .tech-stack-badge {
+      display: inline-block;
+      background: #f1f5f9;
+      border: 1pt solid #cbd5e1;
+      color: #334155;
+      padding: 2pt 6pt;
+      border-radius: 4pt;
+      font-size: 7.5pt;
+      font-weight: 600;
+      margin: 1pt 2pt;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12pt;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10pt;
+    }
+
+    .signature-box {
+      margin-top: 25pt;
+      padding-top: 10pt;
+      border-top: 1pt solid #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .signature-col {
+      width: 45%;
+      text-align: center;
+    }
+
+    .signature-line {
+      border-bottom: 1pt solid #334155;
+      height: 35pt;
+      margin-bottom: 6pt;
+    }
+
+    ul, ol {
+      margin-left: 14pt;
+      margin-bottom: 8pt;
+    }
+
+    li {
+      margin-bottom: 3pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       PAGE 1: PORTADA / COVER
+       ========================================================================== -->
+  <div class="page">
+    <div class="cover-page">
+      <div class="cover-top">
+        <div class="cover-logo-box">
+          <img src="../assets/images/logo-icon.png" alt="Gaona Logo" class="cover-logo-img">
+          <div>
+            <div style="font-family:'Outfit'; font-size:15pt; font-weight:900; letter-spacing:-0.02em; line-height:1;">GAONA</div>
+            <div style="font-size:7pt; color:#00f2fe; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;">Consultores IT</div>
+          </div>
+        </div>
+        <span class="cover-badge">Documento Confidencial</span>
+      </div>
+
+      <div class="cover-main">
+        <div class="cover-subtitle-tag">Documento de Arquitectura &amp; Desarrollo Web</div>
+        <h1 class="cover-title">
+          Propuesta Técnica y Comercial:<br>
+          <span>Plataforma Digital &amp; Sitio Web Corporativo</span>
+        </h1>
+        <p class="cover-desc">
+          Estrategia de digitalización, arquitectura cloud de alto rendimiento, catálogo interactivo de servicios TI, cotizador en tiempo real y asistente virtual automatizado para <strong>Gaona Consultores TI</strong>.
+        </p>
+      </div>
+
+      <div class="cover-meta-grid">
+        <div>
+          <div class="meta-item-lbl">Empresa / Titular</div>
+          <div class="meta-item-val">Gaona Consultores TI</div>
+        </div>
+        <div>
+          <div class="meta-item-lbl">Código de Proyecto</div>
+          <div class="meta-item-val">PROP-GAONA-2026-V1</div>
+        </div>
+        <div>
+          <div class="meta-item-lbl">Fecha de Emisión</div>
+          <div class="meta-item-val">Agosto 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 2: RESUMEN EJECUTIVO & OBJETIVOS
+       ========================================================================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-header-logo">
+        <img src="../assets/images/logo-icon.png" alt="Logo">
+        <span style="font-weight:800; font-family:'Outfit'; font-size:9pt;">GAONA CONSULTORES IT</span>
+      </div>
+      <div class="doc-header-title">Propuesta Técnica • Sección 1 &amp; 2</div>
+    </div>
+
+    <h2>1. Resumen Ejecutivo</h2>
+    <p>
+      El presente documento establece la <strong>Propuesta Técnica y de Arquitectura</strong> para el desarrollo de la plataforma web corporativa de <strong>Gaona Consultores TI</strong>. La solución está diseñada como un canal comercial B2B de alta conversión, concebida para proyectar liderazgo, solidez tecnológica y confianza en el mercado corporativo.
+    </p>
+    <p>
+      La plataforma integra herramientas de interacción avanzadas en tiempo real: un <strong>Cotizador de Proyectos TI interactivo</strong>, un <strong>Asistente Virtual con Inteligencia Artificial (GaonaBot ⚡)</strong> y un <strong>Módulo de Agendamiento y Diagnóstico</strong>, respaldados por una arquitectura web rápida, responsiva y segura.
+    </p>
+
+    <div class="grid-2">
+      <div class="info-card">
+        <div class="info-card-title">🎯 Objetivo Comercial</div>
+        <p style="font-size:8.8pt; margin:0;">
+          Generar clientes potenciales calificados (leads) mediante calculadoras de inversión transparentes, diagnóstico inicial gratuito y contacto directo por WhatsApp y correo corporativo.
+        </p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">⚡ Rendimiento &amp; SEO</div>
+        <p style="font-size:8.8pt; margin:0;">
+          Garantizar tiempos de carga inferiores a 1.8 segundos, puntuación Google Lighthouse superior a 90/100 y posicionamiento orgánico en motores de búsqueda.
+        </p>
+      </div>
+    </div>
+
+    <h2>2. Arquitectura Tecnológica del Sistema</h2>
+    <p>
+      Se ha implementado un stack tecnológico moderno, modular y sin sobrecarga de dependencias pesadas, lo que maximiza la velocidad de ejecución y la longevidad del código:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Capa / Componente</th>
+          <th>Tecnología Adoptada</th>
+          <th>Beneficio Estratégico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Estructura &amp; Semántica</strong></td>
+          <td>HTML5 + Schema.org JSON-LD</td>
+          <td>Indexación óptima en Google, accesibilidad WCAG 2.1 AA y datos estructurados de empresa profesional.</td>
+        </tr>
+        <tr>
+          <td><strong>Diseño &amp; Estilos</strong></td>
+          <td>Vanilla CSS3 (Design Tokens &amp; Grid)</td>
+          <td>Diseño dark-tech corporativo, efectos glassmorphism, micro-animaciones y 100% responsivo.</td>
+        </tr>
+        <tr>
+          <td><strong>Lógica &amp; Reactividad</strong></td>
+          <td>JavaScript ES6+ Nativo Modular</td>
+          <td>Ejecución ultrarrápida en el cliente, cotizador matemático instantáneo y control del Chatbot.</td>
+        </tr>
+        <tr>
+          <td><strong>Asistente Virtual</strong></td>
+          <td>GaonaBot Engine (IA de Búsqueda)</td>
+          <td>Resolución autónoma 24/7 de dudas sobre servicios, cotizaciones, SLAs y contacto.</td>
+        </tr>
+        <tr>
+          <td><strong>Identidad Visual</strong></td>
+          <td>Isotipo Oficial 3D &amp; Favicon</td>
+          <td>Branding tecnológico con soporte para resoluciones Retina y pantallas de alta densidad.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="doc-footer">
+      <span>Gaona Consultores TI • www.gaonaconsultores.com</span>
+      <span>Confidencial • Página 2 de 4</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 3: MÓDULOS DEL SITIO & PLAN DE TRABAJO
+       ========================================================================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-header-logo">
+        <img src="../assets/images/logo-icon.png" alt="Logo">
+        <span style="font-weight:800; font-family:'Outfit'; font-size:9pt;">GAONA CONSULTORES IT</span>
+      </div>
+      <div class="doc-header-title">Propuesta Técnica • Sección 3 &amp; 4</div>
+    </div>
+
+    <h2>3. Módulos y Entregables del Sistema</h2>
+    
+    <div class="info-card">
+      <div class="info-card-title">1. Encabezado Fijo &amp; Navegación Inteligente (Header)</div>
+      <p style="font-size:8.8pt; margin:0;">
+        Barra de navegación compacta (64px) con efecto blur sobre scroll, Isotipo 3D oficial, menú con scroll-padding anti-solapamiento y modo móvil responsivo activado automáticamente bajo 1080px.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">2. Portada de Alto Impacto (Hero Section)</div>
+      <p style="font-size:8.8pt; margin:0;">
+        Propuesta de valor clara, contadores animados en vivo (SLA Uptime 99.9%, +150 proyectos, respuesta &lt;15 min), llamadas a la acción duales y visualización del Centro de Operaciones TI.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">3. Catálogo de Servicios con Filtros Dinámicos</div>
+      <p style="font-size:8.8pt; margin:0;">
+        Clasificación por pestañas de los 5 pilares: <strong>Cloud &amp; DevOps</strong>, <strong>Ciberseguridad &amp; SOC 24/7</strong>, <strong>Software a Medida</strong>, <strong>Redes &amp; Infraestructura</strong> y <strong>Consultoría Estratégica</strong>, con modales de especificación técnica.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">4. Cotizador Interactivo de Soluciones TI</div>
+      <p style="font-size:8.8pt; margin:0;">
+        Calculadora en tiempo real que evalúa servicio principal, tamaño de empresa (Startup, PyME, Corporativo) y módulos adicionales para arrojar presupuestos en MXN, semanas de entrega y equipo asignado, con transferencia directa al formulario.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-title">5. Asistente Virtual GaonaBot ⚡ &amp; Agendamiento</div>
+      <p style="font-size:8.8pt; margin:0;">
+        Chatbot inteligente integrado para atención 24/7 con opciones de un solo toque y formulario de citas de 30 minutos con selector de franjas horarias y generación de ticket de seguimiento.
+      </p>
+    </div>
+
+    <h2>4. Metodología de Trabajo y Cronograma</h2>
+    <p>
+      El proyecto se ejecuta bajo metodología ágil <strong>Scrum / DevSecOps</strong> en 4 fases estructuradas:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fase</th>
+          <th>Actividades Principales</th>
+          <th>Duración</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fase 1: Arquitectura &amp; UI/UX</strong></td>
+          <td>Diseño de tokens visuales, tipografía corporativa e integración del logo oficial.</td>
+          <td>Semana 1</td>
+          <td><span class="highlight-badge">Completado ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fase 2: Desarrollo Frontend</strong></td>
+          <td>Construcción de vistas, catálogo interactivo, cotizador y motor de animaciones.</td>
+          <td>Semana 2</td>
+          <td><span class="highlight-badge">Completado ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fase 3: Módulos Inteligentes</strong></td>
+          <td>Integración de GaonaBot, selector de horarios, validación en tiempo real y modales.</td>
+          <td>Semana 3</td>
+          <td><span class="highlight-badge">Completado ✓</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fase 4: QA, SEO &amp; Deploy</strong></td>
+          <td>Pruebas de compatibilidad, optimización Lighthouse y despliegue continuo en GitHub.</td>
+          <td>Semana 4</td>
+          <td><span class="highlight-badge">Completado ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="doc-footer">
+      <span>Gaona Consultores TI • www.gaonaconsultores.com</span>
+      <span>Confidencial • Página 3 de 4</span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 4: PROPUESTA COMERCIAL, GARANTÍA & FIRMAS
+       ========================================================================== -->
+  <div class="page">
+    <div class="doc-header">
+      <div class="doc-header-logo">
+        <img src="../assets/images/logo-icon.png" alt="Logo">
+        <span style="font-weight:800; font-family:'Outfit'; font-size:9pt;">GAONA CONSULTORES IT</span>
+      </div>
+      <div class="doc-header-title">Propuesta Técnica • Sección 5 &amp; 6</div>
+    </div>
+
+    <h2>5. Esquemas de Inversión y Modelos de Servicio</h2>
+    <p>
+      Se ofrecen modelos de contratación transparentes y escalables según las necesidades de la organización:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Modalidad de Servicio</th>
+          <th>Alcance &amp; Entregables</th>
+          <th>Esquema Comercial</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Proyecto Llave en Mano</strong></td>
+          <td>Desarrollo completo de plataformas o aplicaciones a la medida con alcance cerrado.</td>
+          <td>Inversión por Hitos (50% anticipo / 50% entrega)</td>
+        </tr>
+        <tr>
+          <td><strong>Póliza de Soporte &amp; Monitoreo</strong></td>
+          <td>Mesa de ayuda N1/N2/N3, soporte 24/7/365 con SLAs &lt; 15 min y mantenimiento preventivo.</td>
+          <td>Iguala Mensual Gestionada</td>
+        </tr>
+        <tr>
+          <td><strong>Células de Desarrollo Dedicadas</strong></td>
+          <td>Asignación de Tech Lead, Desarrolladores Senior y Especialistas en Nube/Seguridad.</td>
+          <td>Staff Augmentation / Tiempo y Materiales</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. Garantías, Confidencialidad &amp; Propiedad Intelectual</h2>
+    <ul>
+      <li><strong>100% Propiedad del Cliente:</strong> El cliente es titular absoluto del código fuente, repositorios, credenciales y diseños desarrollados. Cero dependencias cautivas.</li>
+      <li><strong>Acuerdo de Confidencialidad (NDA):</strong> Toda la información comercial, técnica y operativa compartida está blindada legalmente desde el primer contacto.</li>
+      <li><strong>Garantía de Estabilidad:</strong> 90 días de soporte post-lanzamiento para ajustes y garantía operativa sin costo adicional.</li>
+    </ul>
+
+    <div class="signature-box">
+      <div class="signature-col">
+        <div class="signature-line"></div>
+        <strong>Ing. Dirección Técnica TI</strong><br>
+        <span style="font-size:8pt; color:#64748b;">Gaona Consultores TI</span>
+      </div>
+      <div class="signature-col">
+        <div class="signature-line"></div>
+        <strong>Representante de Aprobación</strong><br>
+        <span style="font-size:8pt; color:#64748b;">Cliente / Organización</span>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <span>Gaona Consultores TI • Insurgentes Sur 1602, CDMX • contacto@gaonaconsultores.com</span>
+      <span>Confidencial • Página 4 de 4</span>
+    </div>
+  </div>
+
+</body>
+</html>
